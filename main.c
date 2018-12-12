@@ -13,6 +13,7 @@ int main(int argc, char *argv[]) {
 	char country[10]; //movie country
 	int runTime; //movie runtime
 	float score; //movie score
+	char c;
 	
 	int exit_flag = 0; //flag variable for while loop
 	int option; //user input option
@@ -23,21 +24,22 @@ int main(int argc, char *argv[]) {
 	//1. reading the movie.dat-----------------------------
 	//1.1 FILE open
 	fp = fopen("movie.dat", "r");
-	
+	if ( fp==NULL) {
+		printf("ERROR");
+    }
 	//1.2 list generation (use function list_genList() )
 	list = list_genList();
 	
 	//1.3 read each movie data from the file and add it to the linked list
-	while ( !feof( fp ) )
-	{	
+	while (feof(fp)==0) {
 		//generate a movie info instance(mvInfo) with function mv_genMvInfo()
-		fscanf(fp,"(%s)(%s)(%d)(%f)\n", name, country,runTime, score);
-		mv_genMvInfo(name, score, runTime, country);
+		fscanf(fp,"(s)(%s)(%i)(%f)\n", name, country, &runTime, &score);
+		mvInfo = mv_genMvInfo(name, score, runTime, country);
 		list_addTail(mvInfo, list);
-	}
-
+		printf("%f\n", mvInfo);
+    }
 	//1.4 FILE close
-	fcloes(fp);
+	fclose(fp);
 	
 	//2. program start
 	while(exit_flag == 0) 
@@ -47,7 +49,7 @@ int main(int argc, char *argv[]) {
 		printf("1. print all the movies\n");
 		printf("2. search for specific country movies\n");
 		printf("3. search for specific runtime movies\n");
-		pritnf("4. search fpr specific score movies\n");
+		printf("4. search fpr specific score movies\n");
 		printf("5. exit\n");
 		printf("------------Menu-------------\n");
 		scanf("%i", option);		
@@ -60,11 +62,11 @@ int main(int argc, char *argv[]) {
 				while ( ndPtr != NULL )
 				{
 					//2.2 print a movie data : use functions of movie.c and linkedList.c
-					
+					mv_print(mvInfo);
 					//ndPtr = the next node of the ndPtr;
 					ndPtr = ndPtr+1;
 					//get object of ndPtr to mvInfo void pointer
-					ndPtr=mvInfo;
+					mvInfo = ndPtr;
 					//print the contents of the mvInfo
 					mv_print(mvInfo);
 				}
@@ -86,7 +88,7 @@ int main(int argc, char *argv[]) {
 					ndPtr=mvInfo;
 					//if the input country matches to the country of the movie,
 					//then print the contents of the mvInfo
-					mv_print(mv_getCountry(country));
+					mv_print(mv_getCountry(mvInfo));
 					
 				}
 				
@@ -95,7 +97,7 @@ int main(int argc, char *argv[]) {
 			case 3:
 				//2.4.1 get minimal runtime value to search for
 				printf("select a runtime : ");
-		        scanf("%f", &runTime);
+		        scanf("%i", &runTime);
 		        
 				ndPtr = list;
 					while (ndPtr == NULL)
@@ -107,7 +109,6 @@ int main(int argc, char *argv[]) {
 					ndPtr=mvInfo;
 					//if the input runtime is lower than the runtime of the movie,
 					//then print the contents of the mvInfo
-					mv_print(mv_getRunTime(&runTime));
 				}
 				
 				break;
@@ -127,7 +128,6 @@ int main(int argc, char *argv[]) {
 					ndPtr=mvInfo;
 					//if the input score is lower than the score of the movie,
 					//then print the contents of the mvInfo
-					mv_print(mv_getScor(&score));
 				}
 				break;
 				

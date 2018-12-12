@@ -56,7 +56,7 @@ float mv_getScore(void* obj)
 		printf("selsect a score : ");
 		scanf("%f", obj);
 		if(mvPtr->score >= *(float *)obj){
-			return *(float *)obj;
+			return mvPtr->score;
 		}
 	}
 }
