@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
 						printf("--------------------------\n");
 						mv_print(mvInfo);
 						printf("--------------------------\n");
-						mvCount++;//if 돌 때마다 더해서  
+						mvCount++;//조건에 부합할 때마다  더해서  
 					}
 				}
 				printf("\ntotally %i movies are listed!\n\n\n\n", mvCount);//조건에 부합하는 영화 수 출력  
@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
 						printf("--------------------------\n");
 						mv_print(mvInfo);
 						printf("--------------------------\n");
-						mvCount++;//if 돌 때마다 더해서  
+						mvCount++;//조건에 부합할 때마다  더해서  
 					}
 				}
 				printf("\ntotally %i movies are listed!\n\n\n\n", mvCount); //조건에 부합하는 영화 수 출력  
@@ -145,7 +145,7 @@ int main(int argc, char *argv[]) {
 						printf("--------------------------\n");
 						mv_print(mvInfo);
 					    printf("--------------------------\n");
-					    mvCount++;//if 돌 때마다 더해서  
+					    mvCount++;//조건에 부합할 때마다  더해서  
 					}
 					 
 				}

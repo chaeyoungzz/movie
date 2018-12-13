@@ -25,8 +25,9 @@ void* mv_genMvInfo(char* name, float score, int runTime, char* country)
 	    strcpy(mvPtr->madeIn, country);
 	}
 	
+	// 오류방지 
 	else{
-		printf("ERROR!\n"); // 오류방지  
+		printf("ERROR!\n");   
 	}
 
 	return (void*)mvPtr;
@@ -57,6 +58,7 @@ float mv_getScore(void* obj)
 	if (mvPtr == NULL){
 		printf("ERROR!\n");
 	}
+	
 	//score 값 반환  
 	return mvPtr->score;
 	
@@ -99,6 +101,7 @@ char* mv_getCountry(void* obj)
 	if (mvPtr == NULL){
 		printf("ERROR!\n");
 	}
+	
 	//madein 값 반환  
 	return mvPtr->madeIn;
 	
