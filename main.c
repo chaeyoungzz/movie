@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 	int option; //user input option
 	void *list, *mvInfo; //pointers for linked list and a specific structure instance for a movie data
 	void *ndPtr; //void pointer for linked list node
-	
+	int mvCount; //조건에 부합하는 영화 수 카운트 하기 위해  
 	//1. reading the movie.dat-----------------------------
 	//1.1 FILE open
 	fp = fopen("movie.dat", "r");
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 		printf("1. print all the movies\n");
 		printf("2. search for specific country movies\n");
 		printf("3. search for specific runtime movies\n");
-		printf("4. search fpr specific score movies\n");
+		printf("4. search for specific score movies\n");
 		printf("5. exit\n");
 		printf("------------Menu-------------\n");
 		scanf("%i", &option);		
@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
 		{
 			case 1: //print all the movies
 				printf("printing all the movies in the list.....\n\n\n");
+				mvCount=0;// 숫자가 누적되는 것을 방지  
 				
 				ndPtr = list;
 				while ( list_isEndNode(ndPtr) != 1 )
@@ -64,16 +65,19 @@ int main(int argc, char *argv[]) {
 					//get object of ndPtr to mvInfo void pointer
 					mvInfo = list_getNdObj(ndPtr);
 					//print the contents of the mvInfo
+					
 					mv_print(mvInfo);
-					printf("-----------\n");
+					printf("--------------------------\n");
+					mvCount++;// while 동작횟수만큼 
 				}
-				
+				printf("\ntotally %i movies are listed!\n\n\n\n", mvCount);
 				break;
 				
 			case 2: //print movies of specific country
 				//2.3.1 get country name to search for
 				printf("select a country : ");
 				scanf("%s", country);
+				mvCount=0;// 숫자가 누적되는 것을 방지 
 				
 				ndPtr = list;
 				while (list_isEndNode(ndPtr) != 1)
@@ -86,20 +90,23 @@ int main(int argc, char *argv[]) {
 					//if the input country matches to the country of the movie,
 					//then print the contents of the mvInfo  
 					if(strcmp(country, mv_getCountry(mvInfo))==0){
+						printf("--------------------------\n");
 						mv_print(mvInfo);
-						printf("------------------\n");
+						printf("--------------------------\n");
+						mvCount++;//if 돌 때마다 더해서  
 					}
 				}
-				
+				printf("\ntotally %i movies are listed!\n\n\n\n", mvCount);//조건에 부합하는 영화 수 출력  
 				break;
 				
 			case 3:
 				//2.4.1 get minimal runtime value to search for
 				printf("select a runtime : ");
 		        scanf("%i", &runTime);
+		        mvCount=0;// 숫자가 누적되는 것을 방지 
 		        
 				ndPtr = list;
-					while (ndPtr == NULL)
+				while (list_isEndNode(ndPtr) != 1)
 				{
 					//2.4.2 print a movie data : use functions of movie.c and linkedList.c
 					//ndPtr = the next node of the ndPtr;
@@ -107,14 +114,15 @@ int main(int argc, char *argv[]) {
 					//get object of ndPtr to mvInfo void pointer
 					mvInfo = list_getNdObj(ndPtr);
 					//if the input runtime is lower than the runtime of the movie,
-					//then print the contents of the mvInfo
-					//then print the contents of the mvInfo  
+					//then print the contents of the mvInfo 
 					if(runTime <= mv_getRunTime(mvInfo)){
+						printf("--------------------------\n");
 						mv_print(mvInfo);
-						printf("------------------\n");
+						printf("--------------------------\n");
+						mvCount++;//if 돌 때마다 더해서  
 					}
-					
 				}
+				printf("\ntotally %i movies are listed!\n\n\n\n", mvCount); //조건에 부합하는 영화 수 출력  
 				
 				break;
 				
@@ -122,9 +130,10 @@ int main(int argc, char *argv[]) {
 				//2.5.1 get minimal score value to search for
 				printf("select a socre : ");
 		        scanf("%f", &score);
+		        mvCount=0;// 숫자가 누적되는 것을 방지 
 		        
 				ndPtr = list;
-					while (ndPtr == NULL)
+					while (list_isEndNode(ndPtr) != 1)
 				{
 					//2.5.2 print a movie data : use functions of movie.c and linkedList.c
 					//ndPtr = the next node of the ndPtr;
@@ -133,12 +142,15 @@ int main(int argc, char *argv[]) {
 					mvInfo = list_getNdObj(ndPtr);
 					//if the input score is lower than the score of the movie,
 					//then print the contents of the mvInfo
-					if(score <= mv_getScore(mvInfo)){
+					if(score < mv_getScore(mvInfo)){
+						printf("--------------------------\n");
 						mv_print(mvInfo);
-						printf("------------------\n");
+					    printf("--------------------------\n");
+					    mvCount++;//if 돌 때마다 더해서  
 					}
 					 
 				}
+				printf("\ntotally %i movies are listed!\n\n\n\n", mvCount);//조건에 부합하는 영화 수 출력  
 				break;
 				
 			case 5:
