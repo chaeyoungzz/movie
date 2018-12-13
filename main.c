@@ -33,7 +33,6 @@ int main(int argc, char *argv[]) {
 		//generate a movie info instance(mvInfo) with function mv_genMvInfo()
 		mvInfo = mv_genMvInfo(name, score, runTime, country);
 		list_addTail(mvInfo, list);
-		printf("%s %s %i %f\n", name, country, runTime, score);
     }
 	//1.4 FILE close
 	fclose(fp);
@@ -115,7 +114,7 @@ int main(int argc, char *argv[]) {
 					mvInfo = list_getNdObj(ndPtr);
 					//if the input runtime is lower than the runtime of the movie,
 					//then print the contents of the mvInfo 
-					if(runTime <= mv_getRunTime(mvInfo)){
+					if(runTime < mv_getRunTime(mvInfo)){
 						printf("--------------------------\n");
 						mv_print(mvInfo);
 						printf("--------------------------\n");
