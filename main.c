@@ -13,13 +13,11 @@ int main(int argc, char *argv[]) {
 	char country[10]; //movie country
 	int runTime; //movie runtime
 	float score; //movie score
-	char c;
 	
 	int exit_flag = 0; //flag variable for while loop
 	int option; //user input option
 	void *list, *mvInfo; //pointers for linked list and a specific structure instance for a movie data
 	void *ndPtr; //void pointer for linked list node
-	
 	
 	//1. reading the movie.dat-----------------------------
 	//1.1 FILE open
@@ -31,12 +29,11 @@ int main(int argc, char *argv[]) {
 	list = list_genList();
 	
 	//1.3 read each movie data from the file and add it to the linked list
-	while (feof(fp)==0) {
+	while (fscanf(fp,"%s %s %i %f", name, country, &runTime, &score) != EOF) {
 		//generate a movie info instance(mvInfo) with function mv_genMvInfo()
-		fscanf(fp,"(s)(%s)(%i)(%f)\n", name, country, &runTime, &score);
 		mvInfo = mv_genMvInfo(name, score, runTime, country);
 		list_addTail(mvInfo, list);
-		printf("%f\n", mvInfo);
+		printf("%s %s %i %f\n", name, country, runTime, score);
     }
 	//1.4 FILE close
 	fclose(fp);
@@ -52,23 +49,23 @@ int main(int argc, char *argv[]) {
 		printf("4. search fpr specific score movies\n");
 		printf("5. exit\n");
 		printf("------------Menu-------------\n");
-		scanf("%i", option);		
+		scanf("%i", &option);		
 		switch(option)
 		{
 			case 1: //print all the movies
 				printf("printing all the movies in the list.....\n\n\n");
 				
 				ndPtr = list;
-				while ( ndPtr != NULL )
+				while ( list_isEndNode(ndPtr) != 1 )
 				{
 					//2.2 print a movie data : use functions of movie.c and linkedList.c
-					mv_print(mvInfo);
 					//ndPtr = the next node of the ndPtr;
-					ndPtr = ndPtr+1;
+					ndPtr = list_getNextNd(ndPtr);
 					//get object of ndPtr to mvInfo void pointer
-					mvInfo = ndPtr;
+					mvInfo = list_getNdObj(ndPtr);
 					//print the contents of the mvInfo
 					mv_print(mvInfo);
+					printf("-----------\n");
 				}
 				
 				break;
@@ -76,20 +73,22 @@ int main(int argc, char *argv[]) {
 			case 2: //print movies of specific country
 				//2.3.1 get country name to search for
 				printf("select a country : ");
-				gets(country);
+				scanf("%s", country);
 				
 				ndPtr = list;
-					while (ndPtr == NULL)
+				while (list_isEndNode(ndPtr) != 1)
 				{
 					//2.3.2 print a movie data : use functions of movie.c and linkedList.c
 					//ndPtr = the next node of the ndPtr;
-					ndPtr = ndPtr+1;
+					ndPtr = list_getNextNd(ndPtr);
 					//get object of ndPtr to mvInfo void pointer
-					ndPtr=mvInfo;
+					mvInfo = list_getNdObj(ndPtr);
 					//if the input country matches to the country of the movie,
-					//then print the contents of the mvInfo
-					mv_print(mv_getCountry(mvInfo));
-					
+					//then print the contents of the mvInfo  
+					if(strcmp(country, mv_getCountry(mvInfo))==0){
+						mv_print(mvInfo);
+						printf("------------------\n");
+					}
 				}
 				
 				break;
@@ -104,11 +103,17 @@ int main(int argc, char *argv[]) {
 				{
 					//2.4.2 print a movie data : use functions of movie.c and linkedList.c
 					//ndPtr = the next node of the ndPtr;
-					ndPtr = ndPtr+1;
+					ndPtr = list_getNextNd(ndPtr);
 					//get object of ndPtr to mvInfo void pointer
-					ndPtr=mvInfo;
+					mvInfo = list_getNdObj(ndPtr);
 					//if the input runtime is lower than the runtime of the movie,
 					//then print the contents of the mvInfo
+					//then print the contents of the mvInfo  
+					if(runTime <= mv_getRunTime(mvInfo)){
+						mv_print(mvInfo);
+						printf("------------------\n");
+					}
+					
 				}
 				
 				break;
@@ -123,11 +128,16 @@ int main(int argc, char *argv[]) {
 				{
 					//2.5.2 print a movie data : use functions of movie.c and linkedList.c
 					//ndPtr = the next node of the ndPtr;
-					ndPtr = ndPtr+1;
+					ndPtr = list_getNextNd(ndPtr);
 					//get object of ndPtr to mvInfo void pointer
-					ndPtr=mvInfo;
+					mvInfo = list_getNdObj(ndPtr);
 					//if the input score is lower than the score of the movie,
 					//then print the contents of the mvInfo
+					if(score <= mv_getScore(mvInfo)){
+						mv_print(mvInfo);
+						printf("------------------\n");
+					}
+					 
 				}
 				break;
 				
